@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.devtools.ksp") version "2.0.21-1.0.25" // <-- AGREGA versión aquí
+    id("com.google.devtools.ksp") version "2.0.21-1.0.25"
 }
 
 android {
@@ -50,14 +50,13 @@ android {
         }
     }
 
-    // --- LA PIEZA CLAVE QUE FALTABA ---
-    // Habilita los recursos de Android para los tests unitarios
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
         }
     }
 }
+
 dependencies {
 
     // --- ANDROIDX CORE ---
@@ -110,13 +109,10 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.androidx.ui.test.junit4)
 
-
-
     //Libreria de test locales
     testImplementation(libs.junit)
     testImplementation("io.mockk:mockk:1.13.12")
     testImplementation("org.robolectric:robolectric:4.13")
-
 
     //Test de implementacion de UI
     androidTestImplementation(libs.androidx.junit)
@@ -124,13 +120,11 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
+    androidTestImplementation("io.mockk:mockk-android:1.13.12")
 
     //reglas adicionales
     androidTestImplementation("androidx.test:core-ktx:1.5.0")
     androidTestImplementation("androidx.test:rules:1.5.0")
-
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
 
     // Kotest (para los `shouldBe`, `shouldBeInstanceOf`, etc.)
     testImplementation("io.kotest:kotest-assertions-core:5.8.0")
@@ -138,13 +132,11 @@ dependencies {
     // Coroutines Test
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 
-
-
     // --- ANDROID TESTS (para la carpeta `androidTest`) ---
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.06.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4") // Para `createComposeRule`
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4-v2")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }

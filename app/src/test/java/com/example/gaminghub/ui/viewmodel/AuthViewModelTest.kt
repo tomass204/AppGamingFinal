@@ -14,9 +14,9 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import org.junit.After      // <-- CORREGIDO a JUnit 4
+import org.junit.Before     // <-- CORREGIDO a JUnit 4
+import org.junit.Test       // <-- CORREGIDO a JUnit 4
 
 @ExperimentalCoroutinesApi
 class AuthViewModelTest {
@@ -26,7 +26,7 @@ class AuthViewModelTest {
     private lateinit var sessionManager: SessionManager
     private lateinit var viewModel: AuthViewModel
 
-    @BeforeEach
+    @Before // <-- CORREGIDO a JUnit 4
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         repository = mockk()
@@ -34,21 +34,31 @@ class AuthViewModelTest {
         viewModel = AuthViewModel(repository, sessionManager)
     }
 
-    @AfterEach
+    @After // <-- CORREGIDO a JUnit 4
     fun tearDown() {
         Dispatchers.resetMain()
     }
 
     @Test
     fun `attemptLogin con éxito debería actualizar el estado a shouldRedirect`() = runTest {
-        val loginResponse = LoginResponse(1, "Test", "test@test.com", "ADMIN", "OK", "token")
+        // Arrange
+        val loginResponse = LoginResponse(
+            usuarioId = 1L,
+            nombre = "Test",
+            email = "test@test.com",
+            rol = "ADMIN",
+            message = "OK",
+            token = "token"
+        )
         coEvery { repository.login(any(), any()) } returns Result.Success(loginResponse)
 
+        // Act
         viewModel.onEmailChange("test@test.com")
         viewModel.onPasswordChange("password")
         viewModel.attemptLogin()
         testDispatcher.scheduler.advanceUntilIdle()
 
+        // Assert
         val state = viewModel.uiState.value
         state.shouldRedirect shouldBe true
         state.errorMessage shouldBe null
@@ -57,14 +67,17 @@ class AuthViewModelTest {
 
     @Test
     fun `attemptLogin con error debería mostrar un mensaje de error`() = runTest {
+        // Arrange
         val errorMessage = "Credenciales incorrectas"
         coEvery { repository.login(any(), any()) } returns Result.Error(errorMessage)
 
+        // Act
         viewModel.onEmailChange("test@test.com")
         viewModel.onPasswordChange("password")
         viewModel.attemptLogin()
         testDispatcher.scheduler.advanceUntilIdle()
 
+        // Assert
         val state = viewModel.uiState.value
         state.shouldRedirect shouldBe false
         state.errorMessage shouldBe errorMessage
