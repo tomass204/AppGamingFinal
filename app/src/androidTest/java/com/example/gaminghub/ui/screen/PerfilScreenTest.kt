@@ -91,4 +91,30 @@ class PerfilScreenTest {
         // 3. Assert
         verify(exactly = 1) { onLogout() }
     }
+
+    // --- ¡¡NUEVO TEST DE MANIPULACIÓN AÑADIDO!! ---
+    @Test
+    fun cuandoHaceClicEnCambiarContraseña_seMuestraElDialogo() {
+        // 1. Arrange
+        every { sessionManager.getUserRole() } returns UserRole.USUARIO_BASICO.name
+        every { sessionManager.getUserName() } returns "Test User"
+
+        // 2. Act
+        composeTestRule.setContent {
+            GamingHubTheme {
+                PerfilScreen(
+                    sessionManager = sessionManager,
+                    solicitudModeradorRepository = mockk(relaxed = true),
+                    usuarioRepository = mockk(relaxed = true),
+                    onLogout = mockk(relaxed = true)
+                )
+            }
+        }
+        // Simulamos el clic en el botón
+        composeTestRule.onNodeWithText("Cambiar Contraseña").performClick()
+
+        // 3. Assert
+        // Verificamos que un texto que solo existe en el diálogo ahora es visible
+        composeTestRule.onNodeWithText("Nueva Contraseña").assertIsDisplayed()
+    }
 }

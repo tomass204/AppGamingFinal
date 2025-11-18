@@ -104,6 +104,7 @@ fun PublicacionCard(
                         )
                     }
                     else -> {
+                                //imagen Default    ----
                         Image(
                             painter = painterResource(id = R.drawable.logo),
                             contentDescription = "Logo",
