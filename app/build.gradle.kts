@@ -139,4 +139,8 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4-v2")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    //libreria splash screen
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
 }
