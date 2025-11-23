@@ -31,24 +31,29 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-    buildFeatures {
-        compose = true
-    }
+
+    kotlinOptions { jvmTarget = "1.8" }
+
+    buildFeatures { compose = true }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
+
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/AL2.0"
+            excludes += "META-INF/LGPL2.1"
         }
     }
+
 
     testOptions {
         unitTests {
@@ -64,7 +69,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
 
-    // --- VIEWS CLÁSICAS (si usas XML) ---
+    // --- VIEWS ---
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.android.material:material:1.12.0")
@@ -100,7 +105,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    // --- IMAGE LOADING (COIL) ---
+    // --- COIL ---
     implementation("io.coil-kt:coil-compose:2.6.0")
 
     implementation("com.jakewharton.threetenabp:threetenabp:1.4.4")
@@ -109,38 +114,27 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.androidx.ui.test.junit4)
 
-    //Libreria de test locales
+    // --- UNIT TESTS ---
     testImplementation(libs.junit)
     testImplementation("io.mockk:mockk:1.13.12")
     testImplementation("org.robolectric:robolectric:4.13")
-
-    //Test de implementacion de UI
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-    androidTestImplementation("io.mockk:mockk-android:1.13.12")
-
-    //reglas adicionales
-    androidTestImplementation("androidx.test:core-ktx:1.5.0")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-
-    // Kotest (para los `shouldBe`, `shouldBeInstanceOf`, etc.)
     testImplementation("io.kotest:kotest-assertions-core:5.8.0")
-
-    // Coroutines Test
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 
-    // --- ANDROID TESTS (para la carpeta `androidTest`) ---
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.06.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4-v2")
+    // --- ANDROID INSTRUMENTED TESTS ---
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.00"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    //libreria splash screen
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    androidTestImplementation("io.mockk:mockk-android:1.13.12")
+    androidTestImplementation("androidx.test:core-ktx:1.5.0")
+    androidTestImplementation("androidx.test:rules:1.5.0")
 
+    // --- SPLASH SCREEN ---
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }

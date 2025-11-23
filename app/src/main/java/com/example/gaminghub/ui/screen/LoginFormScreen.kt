@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -55,7 +56,8 @@ fun LoginFormScreen(
             onValueChange = onEmailChange,
             keyboardType = KeyboardType.Email,
             colors = textFieldColors,
-            isError = authUiState.errorMessage != null
+            isError = authUiState.errorMessage != null,
+            modifier = Modifier.testTag("EmailInput")
         )
 
         LoginTextField(
@@ -65,7 +67,8 @@ fun LoginFormScreen(
             isPassword = true,
             keyboardType = KeyboardType.Password,
             colors = textFieldColors,
-            isError = authUiState.errorMessage != null
+            isError = authUiState.errorMessage != null,
+            modifier = Modifier.testTag("PasswordInput")
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -87,7 +90,8 @@ fun LoginFormScreen(
             enabled = !authUiState.isLoading,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp),
+                .padding(vertical = 16.dp)
+                .testTag("LoginButton"),
             colors = ButtonDefaults.buttonColors(containerColor = accentColor)
         ) {
             Text("Iniciar Sesión")
@@ -114,6 +118,7 @@ private fun LoginTextField(
     value: String,
     label: String,
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
     keyboardType: KeyboardType = KeyboardType.Text,
     isPassword: Boolean = false,
     colors: TextFieldColors,
@@ -124,7 +129,7 @@ private fun LoginTextField(
         onValueChange = onValueChange,
         label = { Text(label) },
         singleLine = true,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
         visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
